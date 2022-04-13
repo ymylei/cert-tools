@@ -15,5 +15,9 @@ clean-all:
 format:
 	goimports -l -w .
 
+tools:
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install honnef.co/go/tools/cmd/staticcheck@latest
+
 test:
 	go test -v ./...

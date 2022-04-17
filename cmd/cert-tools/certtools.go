@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/rs/zerolog/log"
@@ -8,7 +9,19 @@ import (
 )
 
 func main() {
-	app := &cli.App{}
+	app := &cli.App{
+		HelpName: "Random tools for cert generation and verification/validation",
+		Commands: []*cli.Command{
+			{
+				Name:  "generate",
+				Usage: "generates a self-signed cert and associated private key.",
+				Action: func(ctx *cli.Context) error {
+					fmt.Printf("not implemented")
+					return nil
+				},
+			},
+		},
+	}
 
 	err := app.Run(os.Args)
 	if err != nil {

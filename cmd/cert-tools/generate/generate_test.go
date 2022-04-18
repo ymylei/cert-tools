@@ -1,13 +1,10 @@
 package generate
 
 import (
-	"encoding/pem"
 	"fmt"
 	"math/rand"
 	"os"
 	"testing"
-
-	"github.com/rs/zerolog/log"
 )
 
 func TestGeneratePair(t *testing.T) {
@@ -18,15 +15,18 @@ func TestGeneratePair(t *testing.T) {
 }
 
 func TestGenerateCert(t *testing.T) {
-	key, cert, err := GenerateCert()
+	key, _ := generateKeyPair()
+
+	_, _, err := generateCert(key)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
-	log.Info().Str("cert", string(pem.EncodeToMemory(cert))).Str("key", string(pem.EncodeToMemory(key))).Msg("output")
 }
 
 func TestWritePemToFile(t *testing.T) {
-	_, cert, err := GenerateCert()
+	key, _ := generateKeyPair()
+
+	_, cert, err := generateCert(key)
 	if err != nil {
 		t.Fatal(err)
 	}

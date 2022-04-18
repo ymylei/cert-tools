@@ -15,12 +15,8 @@ import (
 )
 
 //Function to generate a random self-signed cert and key for use in example operations.
-func GenerateCert() (*pem.Block, *pem.Block, error) {
-	key, err := generateKeyPair()
-	if err != nil {
-		return nil, nil, err
-	}
-
+func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
+	
 	template := &x509.Certificate{
 		Version:            1,
 		SerialNumber:       big.NewInt(1),

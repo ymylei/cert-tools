@@ -15,8 +15,31 @@ import (
 )
 
 //Function to generate a random self-signed cert and key for use in example operations.
+func Generate(name string) error {
+	key, err := generateKeyPair()
+	if err != nil {
+		return err
+	}
+
+	keyBlock, certBlock, err := generateCert(key)
+	if err != nil {
+		return err
+	}
+
+	err = writePemToFile(fmt.Sprintf("%s.key", name), keyBlock)
+	if err != nil {
+		return err
+	}
+
+	err = writePemToFile(fmt.Sprintf("%s.crt", name), certBlock)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
-	
+
 	template := &x509.Certificate{
 		Version:            1,
 		SerialNumber:       big.NewInt(1),
@@ -35,7 +58,6 @@ func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-
 	certBlock := &pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: cert,
@@ -49,6 +71,7 @@ func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 		Type:  "EC PRIVATE KEY",
 		Bytes: keyBytes,
 	}
+
 	return keyBlock, certBlock, nil
 }
 

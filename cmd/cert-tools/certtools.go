@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/rs/zerolog/log"
 	"github.com/urfave/cli/v2"
+	"github.com/ymylei/cert-tools/cmd/cert-tools/generate"
 )
 
 func main() {
@@ -16,7 +16,14 @@ func main() {
 				Name:  "generate",
 				Usage: "generates a self-signed cert and associated private key.",
 				Action: func(ctx *cli.Context) error {
-					fmt.Printf("not implemented")
+					args := ctx.Args()
+					if args.Present() {
+						err := generate.Generate(args.First())
+						if err != nil {
+							log.Fatal().Err(err).Str("name", args.First()).Msg("failed to generate random cert")
+						}
+					}
+					log.Warn().Msg("No args passed, exiting")
 					return nil
 				},
 			},

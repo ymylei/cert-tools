@@ -1,21 +1,63 @@
 package generate
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/rsa"
-
-	"github.com/rs/zerolog/log"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
+	"fmt"
+	"math/big"
+	"time"
 )
 
-//Function to generate a random cert and key for use in example operations.
-func GenerateCert() {
+//Function to generate a random self-signed cert and key for use in example operations.
+func GenerateCert() (*pem.Block, *pem.Block, error) {
+	key, err := generateKeyPair()
+	if err != nil {
+		return nil, nil, err
+	}
 
+	template := &x509.Certificate{
+		Version:            1,
+		SerialNumber:       big.NewInt(1),
+		SignatureAlgorithm: x509.ECDSAWithSHA256,
+		Subject: pkix.Name{
+			CommonName:   "test.example.com",
+			Organization: []string{"TestOrganization"},
+		},
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().Add(time.Hour * 24 * 365),
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageKeyEncipherment,
+		BasicConstraintsValid: true,
+	}
+
+	cert, err := x509.CreateCertificate(rand.Reader, template, template, key.Public(), key)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	certBlock := &pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: cert,
+	}
+
+	keyBytes, err := x509.MarshalECPrivateKey(key)
+	if err != nil {
+		return nil, nil, err
+	}
+	keyBlock := &pem.Block{
+		Type:  "EC PRIVATE KEY",
+		Bytes: keyBytes,
+	}
+	return keyBlock, certBlock, nil
 }
 
-func generateKeyPair() *rsa.PrivateKey {
-	keyPair, err := rsa.GenerateKey(rand.Reader, 2048)
+func generateKeyPair() (*ecdsa.PrivateKey, error) {
+	keyPair, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
-		log.Fatal().Err(err).Msg("unable to generate key")
+		return nil, fmt.Errorf("unable to generate key pair: %v", err)
 	}
-	return keyPair
+	return keyPair, nil
 }

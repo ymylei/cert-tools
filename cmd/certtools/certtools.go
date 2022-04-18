@@ -22,8 +22,9 @@ func main() {
 						if err != nil {
 							log.Fatal().Err(err).Str("name", args.First()).Msg("failed to generate random cert")
 						}
+					} else {
+						log.Warn().Msg("No args passed, exiting")
 					}
-					log.Warn().Msg("No args passed, exiting")
 					return nil
 				},
 			},

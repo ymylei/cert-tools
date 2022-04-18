@@ -40,9 +40,14 @@ func Generate(name string) error {
 
 func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 
+	serial, err := rand.Int(rand.Reader, big.NewInt(10000000000))
+	if err != nil {
+		return nil, nil, err
+	}
+
 	template := &x509.Certificate{
 		Version:            1,
-		SerialNumber:       big.NewInt(1),
+		SerialNumber:       serial,
 		SignatureAlgorithm: x509.ECDSAWithSHA256,
 		Subject: pkix.Name{
 			CommonName:   "test.example.com",

@@ -5,7 +5,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/urfave/cli/v2"
-	"github.com/ymylei/cert-tools/cmd/cert-tools/generate"
+	"github.com/ymylei/cert-tools/cmd/certtools/generate"
 )
 
 func main() {

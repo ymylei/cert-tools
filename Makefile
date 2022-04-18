@@ -1,5 +1,5 @@
 build:
-	go build ./cmd/cert-tools
+	go build -o ./out ./cmd/certtools 
 
 check:
 	goimports -l -d .
@@ -15,9 +15,15 @@ clean-all:
 format:
 	goimports -l -w .
 
+install: build
+	chmod +x ./out/certtools
+	mv ./out/certtools ~/go/bin
+
 tools:
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install honnef.co/go/tools/cmd/staticcheck@latest
 
 test:
 	go test -v ./...
+
+.phony: build check clean clean-all format tools test

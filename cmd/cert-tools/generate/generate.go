@@ -1,6 +1,7 @@
 package generate
 
 import (
+	"bytes"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
@@ -9,6 +10,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"math/big"
+	"os"
 	"time"
 )
 
@@ -60,4 +62,18 @@ func generateKeyPair() (*ecdsa.PrivateKey, error) {
 		return nil, fmt.Errorf("unable to generate key pair: %v", err)
 	}
 	return keyPair, nil
+}
+
+func writePemToFile(filename string, block *pem.Block) error {
+	contents := &bytes.Buffer{}
+
+	err := pem.Encode(contents, block)
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile(filename, contents.Bytes(), 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }

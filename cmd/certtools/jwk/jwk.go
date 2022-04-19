@@ -42,6 +42,6 @@ func marshallJwk(key *jwk.Key) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(jsonKey)
+	fmt.Printf("%s\n", jsonKey)
 	return nil
 }

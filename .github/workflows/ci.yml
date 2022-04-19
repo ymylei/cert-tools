@@ -21,7 +21,7 @@ jobs:
     - name: Install tools
       run: make tools
 
-    - name: Check Format
+    - name: Check Code
       run: make check
 
     - name: Build

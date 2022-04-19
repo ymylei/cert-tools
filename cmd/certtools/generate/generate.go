@@ -38,6 +38,36 @@ func Generate(name string) error {
 	return nil
 }
 
+//Function to generate a ECDSA Key Pair and output as PEM encoded files for other use
+func GenerateKeyPair(name string) error {
+	key, err := generateKeyPair()
+	if err != nil {
+		return err
+	}
+
+	privByes, err := x509.MarshalECPrivateKey(key)
+	if err != nil {
+		return err
+	}
+	pubByes, err := x509.MarshalPKIXPublicKey(&key.PublicKey)
+	if err != nil {
+		return err
+	}
+
+	privPem := marshallPem("EC PRIVATE KEY", privByes)
+	pubPem := marshallPem("PUBLIC KEY", pubByes)
+
+	err = writePemToFile(fmt.Sprintf("%s.key", name), privPem)
+	if err != nil {
+		return err
+	}
+	err = writePemToFile(fmt.Sprintf("%s.pub", name), pubPem)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 
 	serial, err := rand.Int(rand.Reader, big.NewInt(10000000000))
@@ -63,19 +93,13 @@ func generateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	certBlock := &pem.Block{
-		Type:  "CERTIFICATE",
-		Bytes: cert,
-	}
+	certBlock := marshallPem("CERTIFICATE", cert)
 
 	keyBytes, err := x509.MarshalECPrivateKey(key)
 	if err != nil {
 		return nil, nil, err
 	}
-	keyBlock := &pem.Block{
-		Type:  "EC PRIVATE KEY",
-		Bytes: keyBytes,
-	}
+	keyBlock := marshallPem("EC PRIVATE KEY", keyBytes)
 
 	return keyBlock, certBlock, nil
 }
@@ -100,4 +124,11 @@ func writePemToFile(filename string, block *pem.Block) error {
 		return err
 	}
 	return nil
+}
+
+func marshallPem(t string, d []byte) *pem.Block {
+	return &pem.Block{
+		Type:  t,
+		Bytes: d,
+	}
 }

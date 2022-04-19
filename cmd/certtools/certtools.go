@@ -13,7 +13,7 @@ func main() {
 		HelpName: "Random tools for cert generation and verification/validation",
 		Commands: []*cli.Command{
 			{
-				Name:  "generate",
+				Name:  "generatecert",
 				Usage: "generates a self-signed cert and associated private key.",
 				Action: func(ctx *cli.Context) error {
 					args := ctx.Args()
@@ -21,6 +21,22 @@ func main() {
 						err := generate.Generate(args.First())
 						if err != nil {
 							log.Fatal().Err(err).Str("name", args.First()).Msg("failed to generate random cert")
+						}
+					} else {
+						log.Warn().Msg("No args passed, exiting")
+					}
+					return nil
+				},
+			},
+			{
+				Name:  "generatekeypair",
+				Usage: "generates a ECDSA key pair and outputs the priv/pub keys as pem files.",
+				Action: func(ctx *cli.Context) error {
+					args := ctx.Args()
+					if args.Present() {
+						err := generate.GenerateKeyPair(args.First())
+						if err != nil {
+							log.Fatal().Err(err).Str("name", args.First()).Msg("failed to generate key pair")
 						}
 					} else {
 						log.Warn().Msg("No args passed, exiting")

@@ -1,4 +1,4 @@
-package generate
+package tools
 
 import (
 	"fmt"
@@ -8,32 +8,32 @@ import (
 )
 
 func TestGeneratePair(t *testing.T) {
-	_, err := generateKeyPair()
+	_, err := GenerateKeyPair()
 	if err != nil {
 		t.Fatal("key generate failed")
 	}
 }
 
 func TestGenerateCert(t *testing.T) {
-	key, _ := generateKeyPair()
+	key, _ := GenerateKeyPair()
 
-	_, _, err := generateCert(key)
+	_, _, err := GenerateCert(key)
 	if err != nil {
 		t.Fatalf("%v", err)
 	}
 }
 
 func TestWritePemToFile(t *testing.T) {
-	key, _ := generateKeyPair()
+	key, _ := GenerateKeyPair()
 
-	_, cert, err := generateCert(key)
+	_, cert, err := GenerateCert(key)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	filename := fmt.Sprintf("test_%d.pem", rand.Int())
 
-	err = writePemToFile(filename, cert)
+	err = WritePemToFile(filename, cert)
 	if err != nil {
 		t.Fatal(err)
 	}

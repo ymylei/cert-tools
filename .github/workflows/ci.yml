@@ -15,15 +15,11 @@ jobs:
     - uses: actions/setup-go@v4
       with:
         go-version: 'stable'
-    
     - name: Install tools
       run: make tools
-
     - name: Check Code
       run: make check
-
     - name: Build
       run: make build
-
     - name: Test
       run: make test

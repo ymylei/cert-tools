@@ -1,6 +1,6 @@
 module github.com/ymylei/cert-tools
 
-go 1.18
+go 1.21
 
 require (
 	github.com/lestrrat-go/jwx/v2 v2.0.0-beta2

@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-//GenerateCert creates a testing self-signed cert for playing with operations
+// GenerateCert creates a testing self-signed cert for playing with operations
 func GenerateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 
 	serial, err := rand.Int(rand.Reader, big.NewInt(10000000000))
@@ -51,7 +51,7 @@ func GenerateCert(key *ecdsa.PrivateKey) (*pem.Block, *pem.Block, error) {
 	return keyBlock, certBlock, nil
 }
 
-//GenerateKeyPair creates a ECDSA key pair for use in operations
+// GenerateKeyPair creates a ECDSA key pair for use in operations
 func GenerateKeyPair() (*ecdsa.PrivateKey, error) {
 	keyPair, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
@@ -60,7 +60,7 @@ func GenerateKeyPair() (*ecdsa.PrivateKey, error) {
 	return keyPair, nil
 }
 
-//WritePemToFile lets you output the PEM as a file for use elsewhere with testing/otherwise
+// WritePemToFile lets you output the PEM as a file for use elsewhere with testing/otherwise
 func WritePemToFile(filename string, block *pem.Block) error {
 	contents := &bytes.Buffer{}
 
@@ -75,7 +75,7 @@ func WritePemToFile(filename string, block *pem.Block) error {
 	return nil
 }
 
-//MarshallPem simple wrapper for outputting PEM block
+// MarshallPem simple wrapper for outputting PEM block
 func MarshallPem(t string, d []byte) *pem.Block {
 	return &pem.Block{
 		Type:  t,

@@ -7,7 +7,7 @@ import (
 	"github.com/ymylei/cert-tools/pkg/tools"
 )
 
-//Function to generate a random self-signed cert and key for use in example operations.
+// Function to generate a random self-signed cert and key for use in example operations.
 func Generate(name string) error {
 	key, err := tools.GenerateKeyPair()
 	if err != nil {
@@ -31,7 +31,7 @@ func Generate(name string) error {
 	return nil
 }
 
-//Function to generate a ECDSA Key Pair and output as PEM encoded files for other use
+// Function to generate a ECDSA Key Pair and output as PEM encoded files for other use
 func GenerateKeyPair(name string) error {
 	key, err := tools.GenerateKeyPair()
 	if err != nil {

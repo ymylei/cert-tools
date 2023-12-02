@@ -53,7 +53,6 @@ func main() {
 		},
 	}
 
-	log.Info().Msg("testing123")
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal().Err(err).Msg("certtools failed to run")

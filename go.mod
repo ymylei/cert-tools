@@ -3,7 +3,7 @@ module github.com/ymylei/cert-tools
 go 1.21
 
 require (
-	github.com/lestrrat-go/jwx/v2 v2.0.17
+	github.com/lestrrat-go/jwx/v2 v2.0.18
 	github.com/rs/zerolog v1.31.0
 	github.com/urfave/cli/v2 v2.25.7
 )
